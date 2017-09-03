@@ -1,0 +1,35 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = null;
+}
+
+@* the fun starts here *@
+
+<html>
+<head>
+    <title>Untitled</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <!--[if lte IE 8]><script src="/scripts/html5shiv.js" /><![endif]-->
+    <link href="/css/main.css" rel="stylesheet" />
+    <!--[if lte IE 9]><link rel="stylesheet" href="/css/ie9.css" /><![endif]-->
+    <!--[if lte IE 8]><link rel="stylesheet" href="/css/ie8.css" /><![endif]-->
+</head>
+<body>
+
+    @{ Html.RenderPartial("SiteLayout/_MainNavigation"); }
+    <div id="wrapper">
+        @RenderBody()
+
+        @{ Html.RenderPartial("SiteLayout/_Footer"); }
+    </div>
+    <!--[if lte IE 8]><![endif]-->
+
+    <script src="/scripts/jquery.js"></script>
+    <script src="/scripts/util.js"></script>
+    <script src="/scripts/skel.js"></script>
+    <!--[if lte IE8]<script src="/scripts/respond.js" </script><![endif]-->
+    <script src="/scripts/main.js"></script>
+</body>
+</html>
