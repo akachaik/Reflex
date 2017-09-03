@@ -314,6 +314,10 @@
     <Content Include="Views\Home.cshtml" />
     <Content Include="Views\Content.cshtml" />
     <Content Include="Views\Partials\SiteLayout\_MainNavigation.cshtml" />
+    <Content Include="Views\Partials\Content\_Intro.cshtml" />
+    <Content Include="Views\Partials\Content\_Services.cshtml" />
+    <Content Include="Views\Partials\Content\_Spotlight.cshtml" />
+    <Content Include="Views\Partials\Content\_ImageBackgroundContent.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
