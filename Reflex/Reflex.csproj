@@ -292,8 +292,16 @@
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="scripts\contactForm.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
+    <None Include="scripts\jquery.validate-vsdoc.js" />
+    <Content Include="scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="scripts\jquery.validate.js" />
+    <Content Include="scripts\jquery.validate.min.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="scripts\main.js" />
     <Content Include="scripts\modernizr-2.6.2.js" />
     <Content Include="Views\Web.config" />
@@ -319,6 +327,9 @@
     <Content Include="Views\Partials\Content\_Services.cshtml" />
     <Content Include="Views\Partials\Content\_Spotlight.cshtml" />
     <Content Include="Views\Partials\Content\_ImageBackgroundContent.cshtml" />
+    <Content Include="Views\Partials\Contact\_ContactForm.cshtml" />
+    <Content Include="Views\Partials\Contact\_Success.cshtml" />
+    <Content Include="Views\Partials\Contact\_Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -364,6 +375,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ContactController.cs" />
+    <Compile Include="Models\ContactViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

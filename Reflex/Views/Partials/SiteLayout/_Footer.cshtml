@@ -2,16 +2,16 @@
 @inherits UmbracoViewPage
     
 @{
-    var links = Umbraco.AssignedContentItem.GetPropertyValue<RelatedLinks>("footerSocialLinks");
+    var links = Umbraco.AssignedContentItem.GetPropertyValue<RelatedLinks>("footerSocialLinks", true);
 }
 
 <section id="footer" class="wrapper  split style2">
     <div class="inner">
         <section>
             <header>
-                @Umbraco.Field("footerTitle", insertBefore: "<h3>", insertAfter: "</h3>")
+                @Umbraco.Field("footerTitle", insertBefore: "<h3>", insertAfter: "</h3>", recursive: true)
             </header>
-            @Umbraco.Field("footerContent")
+            @Umbraco.Field("footerContent", recursive: true)
             @if (links != null && links.Any())
             {
                 <ul class="icons">
@@ -23,17 +23,7 @@
             }
         </section>
         <section>
-            <form method="post" action="#">
-                <div class="field half first">
-                    <input type="text" name="name" id="name" placeholder="Name" />
-                </div>
-                <div class="field half">
-                    <input type="email" name="email" id="email" placeholder="Email" />
-                </div>
-                <div class="field">
-                    <textarea name="message" id="message" placeholder="Message" rows="4"></textarea>
-                </div><ul class="actions"><li><input type="submit" value="Send Message" /></li></ul>
-            </form>
+                @{ Html.RenderAction("RenderForm", "Contact"); }
         </section>
     </div>
     <div class="copyright">
