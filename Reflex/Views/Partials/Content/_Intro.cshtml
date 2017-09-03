@@ -1,4 +1,6 @@
-﻿@inherits UmbracoViewPage
+﻿@using System.Collections
+@using Umbraco.Web.Models
+@inherits UmbracoViewPage
 
 @{
     var mainImageUrl = string.Empty;
@@ -6,6 +8,9 @@
     {
         mainImageUrl = Umbraco.AssignedContentItem.GetPropertyValue<IPublishedContent>("mainImage").Url + "?width=336&height=336&mode=crop&anchor=center";
     }
+    var links = Umbraco.AssignedContentItem.GetPropertyValue<RelatedLinks>("titleLink");
+    var titleLink = links == null ? null : links.FirstOrDefault();
+    
 }
 <section id="intro" class="wrapper  featured style1">
     <div class="inner">
@@ -17,11 +22,14 @@
                 @Umbraco.Field("pageTitle", altFieldAlias: "pageName", insertBefore: "<h1>", insertAfter: "</h1>")
                 @Umbraco.Field("subTitle", insertBefore: "<p>", insertAfter: "</p>")
             </header>
-            <footer>
-                <ul class="actions">
-                    <li><a href="#" class="button big">Get Started</a></li>
-                </ul>
-            </footer>
+            @if (titleLink != null && !string.IsNullOrEmpty(titleLink.Link))
+            {
+                <footer>
+                    <ul class="actions">
+                        <li><a href="@titleLink.Link" class="button big">@titleLink.Caption</a></li>
+                    </ul>
+                </footer>
+            }
         </div>
     </div>
 </section>

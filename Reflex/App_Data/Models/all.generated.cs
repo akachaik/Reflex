@@ -8,7 +8,7 @@ using  Umbraco.Web;
 using  Umbraco.ModelsBuilder;
 using  Umbraco.ModelsBuilder.Umbraco;
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "645dcde4df1ed21d")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "92ca7f44bdfb51a6")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.2")]
 
 
@@ -42,7 +42,7 @@ namespace Umbraco.Web.PublishedContentModels
 {
 	/// <summary>Home</summary>
 	[PublishedContentModel("home")]
-	public partial class Home : PublishedContentModel, IBasicContentControls, IBasicTitleControls, IMainTitleImageControls
+	public partial class Home : PublishedContentModel, IBasicContentControls, IBasicTitleControls, IFooterContentControls, IMainTitleImageControls
 	{
 #pragma warning disable 0109 // new is redundant
 		public new const string ModelTypeAlias = "home";
@@ -90,6 +90,42 @@ namespace Umbraco.Web.PublishedContentModels
 		public string Subtitle
 		{
 			get { return Umbraco.Web.PublishedContentModels.BasicTitleControls.GetSubtitle(this); }
+		}
+
+		///<summary>
+		/// Title Link: Enter a link here if you want to show a link under title and subtitle
+		///</summary>
+		[ImplementPropertyType("titleLink")]
+		public Umbraco.Web.Models.RelatedLinks TitleLink
+		{
+			get { return Umbraco.Web.PublishedContentModels.BasicTitleControls.GetTitleLink(this); }
+		}
+
+		///<summary>
+		/// Footer Content: Enter the content for the footer
+		///</summary>
+		[ImplementPropertyType("footerContent")]
+		public IHtmlString FooterContent
+		{
+			get { return Umbraco.Web.PublishedContentModels.FooterContentControls.GetFooterContent(this); }
+		}
+
+		///<summary>
+		/// Footer Social Links
+		///</summary>
+		[ImplementPropertyType("footerSocialLinks")]
+		public Umbraco.Web.Models.RelatedLinks FooterSocialLinks
+		{
+			get { return Umbraco.Web.PublishedContentModels.FooterContentControls.GetFooterSocialLinks(this); }
+		}
+
+		///<summary>
+		/// Footer Title: Enter a title for the footer content
+		///</summary>
+		[ImplementPropertyType("footerTitle")]
+		public string FooterTitle
+		{
+			get { return Umbraco.Web.PublishedContentModels.FooterContentControls.GetFooterTitle(this); }
 		}
 
 		///<summary>
@@ -152,6 +188,15 @@ namespace Umbraco.Web.PublishedContentModels
 		public string Subtitle
 		{
 			get { return Umbraco.Web.PublishedContentModels.BasicTitleControls.GetSubtitle(this); }
+		}
+
+		///<summary>
+		/// Title Link: Enter a link here if you want to show a link under title and subtitle
+		///</summary>
+		[ImplementPropertyType("titleLink")]
+		public Umbraco.Web.Models.RelatedLinks TitleLink
+		{
+			get { return Umbraco.Web.PublishedContentModels.BasicTitleControls.GetTitleLink(this); }
 		}
 
 		///<summary>
@@ -228,6 +273,9 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Subtitle</summary>
 		string Subtitle { get; }
+
+		/// <summary>Title Link</summary>
+		Umbraco.Web.Models.RelatedLinks TitleLink { get; }
 	}
 
 	/// <summary>Basic Title Controls</summary>
@@ -278,6 +326,18 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Subtitle</summary>
 		public static string GetSubtitle(IBasicTitleControls that) { return that.GetPropertyValue<string>("subtitle"); }
+
+		///<summary>
+		/// Title Link: Enter a link here if you want to show a link under title and subtitle
+		///</summary>
+		[ImplementPropertyType("titleLink")]
+		public Umbraco.Web.Models.RelatedLinks TitleLink
+		{
+			get { return GetTitleLink(this); }
+		}
+
+		/// <summary>Static getter for Title Link</summary>
+		public static Umbraco.Web.Models.RelatedLinks GetTitleLink(IBasicTitleControls that) { return that.GetPropertyValue<Umbraco.Web.Models.RelatedLinks>("titleLink"); }
 	}
 
 	// Mixin content Type 1070 with alias "mainTitleImageControls"
@@ -370,6 +430,82 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Main Content</summary>
 		public static IHtmlString GetMainContent(IBasicContentControls that) { return that.GetPropertyValue<IHtmlString>("mainContent"); }
+	}
+
+	// Mixin content Type 1073 with alias "footerContentControls"
+	/// <summary>Footer Content Controls</summary>
+	public partial interface IFooterContentControls : IPublishedContent
+	{
+		/// <summary>Footer Content</summary>
+		IHtmlString FooterContent { get; }
+
+		/// <summary>Footer Social Links</summary>
+		Umbraco.Web.Models.RelatedLinks FooterSocialLinks { get; }
+
+		/// <summary>Footer Title</summary>
+		string FooterTitle { get; }
+	}
+
+	/// <summary>Footer Content Controls</summary>
+	[PublishedContentModel("footerContentControls")]
+	public partial class FooterContentControls : PublishedContentModel, IFooterContentControls
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "footerContentControls";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public FooterContentControls(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<FooterContentControls, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Footer Content: Enter the content for the footer
+		///</summary>
+		[ImplementPropertyType("footerContent")]
+		public IHtmlString FooterContent
+		{
+			get { return GetFooterContent(this); }
+		}
+
+		/// <summary>Static getter for Footer Content</summary>
+		public static IHtmlString GetFooterContent(IFooterContentControls that) { return that.GetPropertyValue<IHtmlString>("footerContent"); }
+
+		///<summary>
+		/// Footer Social Links
+		///</summary>
+		[ImplementPropertyType("footerSocialLinks")]
+		public Umbraco.Web.Models.RelatedLinks FooterSocialLinks
+		{
+			get { return GetFooterSocialLinks(this); }
+		}
+
+		/// <summary>Static getter for Footer Social Links</summary>
+		public static Umbraco.Web.Models.RelatedLinks GetFooterSocialLinks(IFooterContentControls that) { return that.GetPropertyValue<Umbraco.Web.Models.RelatedLinks>("footerSocialLinks"); }
+
+		///<summary>
+		/// Footer Title: Enter a title for the footer content
+		///</summary>
+		[ImplementPropertyType("footerTitle")]
+		public string FooterTitle
+		{
+			get { return GetFooterTitle(this); }
+		}
+
+		/// <summary>Static getter for Footer Title</summary>
+		public static string GetFooterTitle(IFooterContentControls that) { return that.GetPropertyValue<string>("footerTitle"); }
 	}
 
 	/// <summary>Folder</summary>
