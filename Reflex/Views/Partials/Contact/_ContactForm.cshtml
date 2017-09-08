@@ -11,6 +11,7 @@
         OnFailure = "contactForm.sShowResult"
     }, new { id = "contact-form" }))
     {
+        @Html.AntiForgeryToken()
         <div class="field half first">
             @Html.TextBoxFor(m => m.Name, new { placeholder = "Name" })
             @Html.ValidationMessageFor(m => m.Name)

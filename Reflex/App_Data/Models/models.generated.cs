@@ -19,14 +19,14 @@ using Umbraco.ModelsBuilder;
 using Umbraco.ModelsBuilder.Umbraco;
 
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "92ca7f44bdfb51a6")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "98c170b94ccd4b12")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.2")]
 
 namespace Umbraco.Web.PublishedContentModels
 {
 	/// <summary>Home</summary>
 	[PublishedContentModel("home")]
-	public partial class Home : PublishedContentModel, IBasicContentControls, IBasicTitleControls, IFooterContentControls, IMainTitleImageControls
+	public partial class Home : PublishedContentModel, IBasicContentControls, IBasicTitleControls, IFooterContentControls, IMainTitleImageControls, ISiteControls
 	{
 #pragma warning disable 0109 // new is redundant
 		public new const string ModelTypeAlias = "home";
@@ -119,6 +119,15 @@ namespace Umbraco.Web.PublishedContentModels
 		public IPublishedContent MainImage
 		{
 			get { return Umbraco.Web.PublishedContentModels.MainTitleImageControls.GetMainImage(this); }
+		}
+
+		///<summary>
+		/// Site Title: Please enter the site title.
+		///</summary>
+		[ImplementPropertyType("siteTitle")]
+		public string SiteTitle
+		{
+			get { return Umbraco.Web.PublishedContentModels.SiteControls.GetSiteTitle(this); }
 		}
 	}
 
@@ -490,6 +499,52 @@ namespace Umbraco.Web.PublishedContentModels
 
 		/// <summary>Static getter for Footer Title</summary>
 		public static string GetFooterTitle(IFooterContentControls that) { return that.GetPropertyValue<string>("footerTitle"); }
+	}
+
+	// Mixin content Type 1074 with alias "siteControls"
+	/// <summary>Site Controls</summary>
+	public partial interface ISiteControls : IPublishedContent
+	{
+		/// <summary>Site Title</summary>
+		string SiteTitle { get; }
+	}
+
+	/// <summary>Site Controls</summary>
+	[PublishedContentModel("siteControls")]
+	public partial class SiteControls : PublishedContentModel, ISiteControls
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "siteControls";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public SiteControls(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<SiteControls, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+
+		///<summary>
+		/// Site Title: Please enter the site title.
+		///</summary>
+		[ImplementPropertyType("siteTitle")]
+		public string SiteTitle
+		{
+			get { return GetSiteTitle(this); }
+		}
+
+		/// <summary>Static getter for Site Title</summary>
+		public static string GetSiteTitle(ISiteControls that) { return that.GetPropertyValue<string>("siteTitle"); }
 	}
 
 	/// <summary>Folder</summary>

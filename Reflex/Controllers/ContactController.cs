@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Reflex.Models;
 using Umbraco.Web.Mvc;
 using System.Net.Mail;
@@ -18,12 +19,14 @@ namespace Reflex.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult RenderForm(ContactViewModel model)
         {
             return PartialView(GetViewPath("_ContactForm"), model);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult SubmitForm(ContactViewModel model)
         {
             var success = false;
@@ -37,7 +40,7 @@ namespace Reflex.Controllers
 
         public bool SendEmail(ContactViewModel model)
         {
-            ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+            var logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             try
             {
                 var message = new MailMessage();
@@ -47,7 +50,7 @@ namespace Reflex.Controllers
                 var fromAddress = WebConfigurationManager.AppSettings["ContactEmailFrom"];
 
                 message.Subject = $"Enquiry from: {model.Name} - {model.Email}";
-                message.Body = model.Message;
+                message.Body = $"Enquiry from: {model.Name} - {model.Email} {Environment.NewLine + Environment.NewLine} Message: {model.Message}";
                 message.To.Add(new MailAddress(toAddress, toAddress));
                 message.From = new MailAddress(fromAddress, fromAddress);
 
@@ -57,7 +60,7 @@ namespace Reflex.Controllers
             }
             catch (System.Exception ex)
             {
-                log.Error("Contact Form Error", ex);
+                logger.Error("Contact Form Error", ex);
                 return false;
             }
         }
